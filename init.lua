@@ -170,6 +170,9 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
+-- view current directory
+vim.keymap.set('n', '<leader>e', ':e %:p:h<CR>', { desc = '[E]xplore sibling files' })
+
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
 -- is not what someone will guess without a bit more experience.
@@ -264,6 +267,7 @@ require('lazy').setup({
         topdelete = { text = '‾' },
         changedelete = { text = '~' },
       },
+      current_line_blame = true,
     },
   },
 
@@ -633,6 +637,14 @@ require('lazy').setup({
         -- But for many setups, the LSP (`tsserver`) will work just fine
         tsserver = {},
         prettierd = {},
+        eslint = {
+          settings = {
+            codeActionOnSave = {
+              enable = true,
+              mode = 'all',
+            },
+          },
+        },
         --
 
         lua_ls = {
@@ -749,12 +761,10 @@ require('lazy').setup({
             'rafamadriz/friendly-snippets',
             config = function()
               require('luasnip.loaders.from_vscode').lazy_load { include = { 'html' } }
+              require('luasnip.loaders.from_lua').lazy_load { paths = { './snippets' } }
             end,
           },
         },
-        config = function()
-          require('luasnip.loaders.from_vscode').lazy_load()
-        end,
       },
       'saadparwaiz1/cmp_luasnip',
 
@@ -952,11 +962,11 @@ require('lazy').setup({
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
   -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
+  require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
